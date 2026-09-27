@@ -1,158 +1,126 @@
-document.addEventListener("DOMContentLoaded", () => {
+const openBtn = document.getElementById("openBtn");
 
-    const openBtn = document.getElementById("openBtn");
-    const opening = document.getElementById("opening");
-    const mainContent = document.getElementById("mainContent");
-    const music = document.getElementById("music");
-    const typingText = document.getElementById("typingText");
-    const heartsContainer = document.querySelector(".hearts");
+const opening = document.getElementById("opening");
 
+const mainContent = document.getElementById("mainContent");
 
-    /* =========================
-       OPEN WEBSITE
-    ========================= */
+const music = document.getElementById("music");
 
-    if (openBtn && opening && mainContent) {
+const typingText = document.getElementById("typingText");
 
-        openBtn.addEventListener("click", () => {
 
-            opening.style.opacity = "0";
-            opening.style.transform = "scale(1.05)";
-            opening.style.transition = "1s ease";
+/* =========================
+   OPEN WEBSITE
+========================= */
 
-            setTimeout(() => {
+openBtn.addEventListener("click", () => {
 
-                opening.style.display = "none";
+    opening.style.opacity = "0";
 
-                mainContent.classList.remove("hidden");
+    opening.style.transform = "scale(1.05)";
 
-                window.scrollTo({
-                    top: 0,
-                    behavior: "instant"
-                });
+    opening.style.transition = "1s ease";
 
-                /* MUSIC */
-                if (music) {
-                    music.play().catch(() => {});
-                }
+    setTimeout(() => {
 
-                /* TYPING */
-                typeWriter();
+        opening.style.display = "none";
 
-            }, 900);
+        mainContent.classList.remove("hidden");
 
-        });
+        window.scrollTo(0, 0);
 
-    }
+        music.play().catch(() => {});
 
+        typeWriter();
 
-    /* =========================
-       TYPING EFFECT
-    ========================= */
-
-    const message =
-        "thank you for being a beautiful part of my life.";
-
-    let index = 0;
-
-    function typeWriter() {
-
-        if (!typingText) return;
-
-        typingText.textContent = "";
-
-        index = 0;
-
-        function write() {
-
-            if (index < message.length) {
-
-                typingText.textContent +=
-                    message.charAt(index);
-
-                index++;
-
-                setTimeout(write, 60);
-
-            }
-
-        }
-
-        write();
-
-    }
-
-
-    /* =========================
-       FLOATING HEARTS
-    ========================= */
-
-    function createHeart() {
-
-        if (!heartsContainer) return;
-
-        const heart =
-            document.createElement("div");
-
-        heart.innerHTML =
-            Math.random() > 0.2 ? "♡" : "✦";
-
-        heart.style.position =
-            "fixed";
-
-        heart.style.left =
-            Math.random() * 100 + "vw";
-
-        heart.style.bottom =
-            "-30px";
-
-        heart.style.fontSize =
-            (Math.random() * 15 + 10) + "px";
-
-        heart.style.color =
-            "rgba(232, 154, 184, 0.5)";
-
-        heart.style.pointerEvents =
-            "none";
-
-        heart.style.zIndex =
-            "10";
-
-        heart.style.opacity =
-            "0";
-
-        heart.style.transition =
-            "transform 7s linear, opacity 7s linear";
-
-        heartsContainer.appendChild(heart);
-
-
-        /* MULAI ANIMASI */
-
-        requestAnimationFrame(() => {
-
-            heart.style.opacity = "1";
-
-            heart.style.transform =
-                `translateY(-${window.innerHeight + 100}px) rotate(20deg)`;
-
-        });
-
-
-        /* HAPUS */
-
-        setTimeout(() => {
-
-            heart.remove();
-
-        }, 7000);
-
-    }
-
-
-    /* HEART MUNCUL SETIAP 1.2 DETIK */
-
-    setInterval(createHeart, 1200);
-
+    }, 900);
 
 });
+
+
+/* =========================
+   TYPING EFFECT
+========================= */
+
+const message =
+    "thank you for being a beautiful part of my life.";
+
+
+let index = 0;
+
+
+function typeWriter() {
+
+    if (index < message.length) {
+
+        typingText.textContent +=
+            message.charAt(index);
+
+        index++;
+
+        setTimeout(typeWriter, 60);
+
+    }
+
+}
+
+
+/* =========================
+   FLOATING HEARTS
+========================= */
+
+const heartsContainer =
+    document.querySelector(".hearts");
+
+
+function createHeart() {
+
+    const heart =
+        document.createElement("div");
+
+    heart.innerHTML = "♡";
+
+    heart.style.position = "fixed";
+
+    heart.style.left =
+        Math.random() * 100 + "vw";
+
+    heart.style.bottom = "-30px";
+
+    heart.style.fontSize =
+        Math.random() * 15 + 10 + "px";
+
+    heart.style.color =
+        "rgba(232, 154, 184, 0.5)";
+
+    heart.style.pointerEvents =
+        "none";
+
+    heart.style.zIndex = "10";
+
+    heart.style.transition =
+        "transform 7s linear, opacity 7s linear";
+
+    heartsContainer.appendChild(heart);
+
+
+    setTimeout(() => {
+
+        heart.style.transform =
+            `translateY(-${window.innerHeight + 100}px) rotate(20deg)`;
+
+        heart.style.opacity = "0";
+
+    }, 100);
+
+
+    setTimeout(() => {
+
+        heart.remove();
+
+    }, 7000);
+
+}
+
+
+setInterval(createHeart, 1200);
