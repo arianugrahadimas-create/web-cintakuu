@@ -1,126 +1,165 @@
-const openBtn = document.getElementById("openBtn");
+document.addEventListener("DOMContentLoaded", () => {
 
-const opening = document.getElementById("opening");
+    const opening =
+        document.getElementById("opening");
 
-const mainContent = document.getElementById("mainContent");
+    const openBtn =
+        document.getElementById("openBtn");
 
-const music = document.getElementById("music");
+    const main =
+        document.getElementById("main");
 
-const typingText = document.getElementById("typingText");
+    const typing =
+        document.getElementById("typing");
 
-
-/* =========================
-   OPEN WEBSITE
-========================= */
-
-openBtn.addEventListener("click", () => {
-
-    opening.style.opacity = "0";
-
-    opening.style.transform = "scale(1.05)";
-
-    opening.style.transition = "1s ease";
-
-    setTimeout(() => {
-
-        opening.style.display = "none";
-
-        mainContent.classList.remove("hidden");
-
-        window.scrollTo(0, 0);
-
-        music.play().catch(() => {});
-
-        typeWriter();
-
-    }, 900);
-
-});
+    const hearts =
+        document.getElementById("hearts");
 
 
-/* =========================
-   TYPING EFFECT
-========================= */
 
-const message =
-    "thank you for being a beautiful part of my life.";
+    /* =====================
+       OPENING
+    ===================== */
+
+    openBtn.addEventListener("click", () => {
+
+        opening.classList.add("hide");
+
+        setTimeout(() => {
+
+            opening.style.display = "none";
+
+            main.classList.add("show");
+
+            startTyping();
+
+        }, 1100);
+
+    });
 
 
-let index = 0;
 
+    /* =====================
+       TYPING
+    ===================== */
 
-function typeWriter() {
+    function startTyping() {
 
-    if (index < message.length) {
+        const text =
+            "Dari sekian banyak cerita yang bisa terjadi, aku bersyukur salah satunya mempertemukan aku dengan kamu.";
 
-        typingText.textContent +=
-            message.charAt(index);
+        let index = 0;
 
-        index++;
+        typing.textContent = "";
 
-        setTimeout(typeWriter, 60);
+        const timer =
+            setInterval(() => {
+
+                typing.textContent +=
+                    text[index];
+
+                index++;
+
+                if (index >= text.length) {
+
+                    clearInterval(timer);
+
+                }
+
+            }, 38);
 
     }
 
-}
 
 
-/* =========================
-   FLOATING HEARTS
-========================= */
+    /* =====================
+       SCROLL REVEAL
+    ===================== */
 
-const heartsContainer =
-    document.querySelector(".hearts");
+    const reveal =
+        document.querySelectorAll(".reveal");
 
 
-function createHeart() {
+    const observer =
+        new IntersectionObserver(
+            entries => {
 
-    const heart =
-        document.createElement("div");
+                entries.forEach(entry => {
 
-    heart.innerHTML = "♡";
+                    if (entry.isIntersecting) {
 
-    heart.style.position = "fixed";
+                        entry.target.classList.add("show");
 
-    heart.style.left =
-        Math.random() * 100 + "vw";
+                    }
 
-    heart.style.bottom = "-30px";
+                });
 
-    heart.style.fontSize =
-        Math.random() * 15 + 10 + "px";
+            },
+            {
+                threshold: .12
+            }
+        );
 
-    heart.style.color =
-        "rgba(232, 154, 184, 0.5)";
 
-    heart.style.pointerEvents =
-        "none";
+    reveal.forEach(element => {
 
-    heart.style.zIndex = "10";
+        observer.observe(element);
 
-    heart.style.transition =
-        "transform 7s linear, opacity 7s linear";
+    });
 
-    heartsContainer.appendChild(heart);
 
+
+    /* =====================
+       FLOATING HEARTS
+    ===================== */
+
+    function createHeart() {
+
+        const heart =
+            document.createElement("div");
+
+        heart.className =
+            "heart";
+
+        heart.innerHTML =
+            Math.random() > .25
+                ? "♡"
+                : "✦";
+
+        heart.style.left =
+            Math.random() * 100 + "vw";
+
+        heart.style.fontSize =
+            (9 + Math.random() * 14) + "px";
+
+        heart.style.animationDuration =
+            (7 + Math.random() * 6) + "s";
+
+        hearts.appendChild(heart);
+
+
+        setTimeout(() => {
+
+            heart.remove();
+
+        }, 14000);
+
+    }
+
+
+    setInterval(createHeart, 1900);
+
+
+
+    /* =====================
+       RANDOM FIRST PARTICLES
+    ===================== */
 
     setTimeout(() => {
 
-        heart.style.transform =
-            `translateY(-${window.innerHeight + 100}px) rotate(20deg)`;
+        createHeart();
+        createHeart();
 
-        heart.style.opacity = "0";
+    }, 800);
 
-    }, 100);
-
-
-    setTimeout(() => {
-
-        heart.remove();
-
-    }, 7000);
-
-}
-
-
-setInterval(createHeart, 1200);
+});
